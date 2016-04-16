@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AnnouncerText : MonoBehaviour
 {
-    [SerializeField] private float distance = 200f;
-    [SerializeField] private float lifeTime = 3f;
-    
+    private float distance;
+    private float lifeTime;
     private Text textComponent;
 
 	void Awake()
@@ -19,7 +19,7 @@ public class AnnouncerText : MonoBehaviour
         Vector2 initialPosition = transform.position;
         float startTime = Time.time;
         float endTime = startTime + lifeTime;
-        Vector3 destination = initialPosition + Random.insideUnitCircle.normalized * distance;
+        Vector3 destination = initialPosition + UnityEngine.Random.insideUnitCircle.normalized * distance;
         while (Time.time < endTime)
         {
             float percent = (Time.time - startTime) / lifeTime;
@@ -35,10 +35,11 @@ public class AnnouncerText : MonoBehaviour
         StartCoroutine(FloatAway());
     }
     
-    public void Initialise(string text, Color textColor)
+    public void Initialise(string text, Color textColor, float duration, float distance)
     {
-        Debug.Log(textColor);
         textComponent.text = text;
         textComponent.color = textColor;
+        lifeTime = duration;
+        this.distance = distance;
     }
 }

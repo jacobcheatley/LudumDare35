@@ -22,11 +22,6 @@ public class Ball : MonoBehaviour
 	    trail.sortingLayerName = "Background";
 	}
 
-    void Update()
-    {
-//        rb.velocity = rb.velocity.normalized * speed;
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Player")
@@ -37,5 +32,11 @@ public class Ball : MonoBehaviour
             trail.material = rend.material = paddle.material;
             lastHit = paddle.playerIndex;
         }
+    }
+
+    void Explode()
+    {
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>().ballCount--;
+        Destroy(gameObject);
     }
 }

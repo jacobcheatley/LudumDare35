@@ -29,6 +29,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b66d538e599aa8469a2d65f8559b5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 400
+  lifeTime: 3
 --- !u!114 &11471932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41,7 +43,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
