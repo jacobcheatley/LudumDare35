@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+//using UnityEngine.EventSystems;
 
 public enum RandomEvent
 {
@@ -38,16 +39,20 @@ public class Controller : MonoBehaviour
     private bool checkForNoBalls = false;
     private List<RandomEvent> weightedEvents;
 
-
     void Start()
     {
         balls = new List<Ball>();
         arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         paddles = GameObject.FindGameObjectsWithTag("Player").Select(p => p.GetComponent<Paddle>()).ToArray();
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
+        weightedEvents = EventWeights.WeightedEvents();
+    }
+
+    public void BeginGame()
+    {
+        Debug.Log("Begin");
         StartCoroutine(EventLoop());
         StartCoroutine(EventSpeedUp());
-        weightedEvents = EventWeights.WeightedEvents();
     }
 
     private IEnumerator EventSpeedUp()

@@ -37,8 +37,6 @@ public class Paddle : MonoBehaviour
 	    arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         material = GetComponent<Renderer>().material;
         GetComponent<TrailRenderer>().sortingLayerName = "Background";
-        if (isAI)
-            controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>();
 	}
 
 	void Update()
@@ -131,6 +129,12 @@ public class Paddle : MonoBehaviour
             }
         }
         return targetPosition;
+    }
+
+    public void SetAI()
+    {
+        isAI = true;
+        controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>();
     }
 
     public void Reverse()
