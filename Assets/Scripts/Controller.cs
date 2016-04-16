@@ -7,6 +7,7 @@ public class Controller : MonoBehaviour
 
 	void Update()
 	{
+        //TODO: Remove this before publishing
 	    if (Input.GetKeyDown(KeyCode.Space))
 	        SpawnBall();
 	}

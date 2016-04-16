@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(PolygonCollider2D))]
@@ -56,6 +57,20 @@ public class ArenaPolygon : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.tag == "Ball")
-            Debug.Log("Ball exited.");
+            OnBallExit(new BallExitArgs { LastHit = other.GetComponent<Ball>().lastHit });
     }
+
+    //Events
+    public event EventHandler<BallExitArgs> BallExit;
+    protected virtual void OnBallExit(BallExitArgs e)
+    {
+        EventHandler<BallExitArgs> handler = BallExit;
+        if (handler != null)
+            handler(this, e);
+    }
+}
+
+public class BallExitArgs : EventArgs
+{
+    public PlayerIndex LastHit;
 }

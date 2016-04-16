@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private Renderer rend;
     private TrailRenderer trail;
-    private PlayerIndex lastHit;
+    [HideInInspector] public PlayerIndex lastHit;
 
 	void Start()
 	{
@@ -29,7 +29,6 @@ public class Ball : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Kek");
         if (other.gameObject.tag == "Player")
         {
             Paddle paddle = other.gameObject.GetComponent<Paddle>();
