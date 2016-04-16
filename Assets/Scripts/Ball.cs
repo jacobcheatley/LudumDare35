@@ -4,7 +4,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public float speed = 3f;
-    [SerializeField] private float angularSpread = 8f;
+//    [SerializeField] private float angularSpread = 8f;
 
     [HideInInspector] public Rigidbody2D rb;
     private Renderer rend;
@@ -26,12 +26,24 @@ public class Ball : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            //TODO: Fix side pushing bug - Maybe use magnitude checking?
+            Paddle paddle = other.gameObject.GetComponent<Paddle>();
+            Vector2 paddlePosition = paddle.gameObject.transform.position;
+            Vector2 positionDifference = (Vector2)transform.position - paddlePosition;
+            rb.velocity = (positionDifference.normalized + -paddlePosition.normalized).normalized * speed; // Half between -velocity and position difference
+            trail.material = rend.material = paddle.material;
+            lastHit = paddle.playerIndex;
+        }
+        /* OLD:
+        if (other.gameObject.tag == "Player")
+        {
             Paddle paddle = other.gameObject.GetComponent<Paddle>();
             float reflectionAngle = 180f - paddle.angle + UnityEngine.Random.Range(-angularSpread, angularSpread);
             rb.velocity = Quaternion.Euler(0, 0, reflectionAngle) * Vector2.right * speed;
             trail.material = rend.material = paddle.material;
             lastHit = paddle.playerIndex;
         }
+        */
     }
 
     public void Explode()

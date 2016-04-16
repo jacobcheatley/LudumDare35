@@ -53,7 +53,7 @@ public class Paddle : MonoBehaviour
         linearVelocity = Mathf.Clamp(linearVelocity, -maxLinearVelocity, maxLinearVelocity);
 	    float angularVelocity = linearVelocity / inRadius;
 	    angle += angularVelocity * Time.deltaTime * multiplier;
-
+        
         angle %= 360f;
 	    angle = angle < 0 ? angle + 360f : angle;
         transform.position = Quaternion.Euler(0, 0, -angle) * Vector3.right * inRadius;

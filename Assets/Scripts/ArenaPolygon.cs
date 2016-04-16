@@ -80,14 +80,9 @@ public class ArenaPolygon : MonoBehaviour
     private IEnumerator ChangeRadius(float newRadius)
     {
         newRadius = Mathf.Clamp(newRadius, minRadius, maxRadius);
-        float startTime = Time.time;
-        float endTime = startTime + 1f;
-        while (Time.time < endTime)
-        {
-            radius = Mathf.Lerp(radius, newRadius, Time.deltaTime * 10f);
-            GenerateMesh();
-            yield return null;
-        }
+        radius = Mathf.Lerp(radius, newRadius, 0.5f);
+        GenerateMesh();
+        yield return new WaitForSeconds(0.5f);
         radius = newRadius;
         GenerateMesh();
     }

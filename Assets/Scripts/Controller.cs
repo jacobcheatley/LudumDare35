@@ -99,6 +99,7 @@ public class Controller : MonoBehaviour
             Action a;
             string message;
             RandomEvent x = RandomRandomEvent();
+            x = RandomEvent.RandomRadius;
             #region Event Switch
             switch (x)
             {
