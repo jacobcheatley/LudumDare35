@@ -48,7 +48,10 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         if (checkForNoBalls && ballCount == 0)
+        {
+            checkForNoBalls = false;
             StartCoroutine(BeginAgain());
+        }
     }
 
     private IEnumerator BeginAgain()
@@ -62,6 +65,7 @@ public class Controller : MonoBehaviour
     {
         Instantiate(ball, Vector3.zero, Quaternion.identity);
         ballCount++;
+        checkForNoBalls = true;
     }
 
     private IEnumerator EventLoop()
@@ -69,7 +73,6 @@ public class Controller : MonoBehaviour
         SayGenericMessage("BEGIN!");
         yield return new WaitForSeconds(3f);
         SpawnBall();
-        checkForNoBalls = true;
         yield return new WaitForSeconds(secondsBetweenEvents - 3f);
         while (true)
         {
@@ -180,10 +183,9 @@ public class Controller : MonoBehaviour
                     throw new ArgumentOutOfRangeException();
             }
             #endregion
-            SayGenericMessage(message);
-            yield return new WaitForSeconds(3f);
+            SayGenericMessage(message, 0f);
             a();
-            yield return new WaitForSeconds(secondsBetweenEvents - 3f);
+            yield return new WaitForSeconds(secondsBetweenEvents);
         }
     }
         
@@ -228,9 +230,9 @@ public class Controller : MonoBehaviour
         return (RandomEvent)UnityEngine.Random.Range(0, Enum.GetValues(typeof (RandomEvent)).Length);
     }
 
-    public void SayGenericMessage(string message)
+    public void SayGenericMessage(string message, float countdown = 3f)
     {
-        OnGenericMessage(new GenericMessageArgs { Countdown = 3f, Message = message, Color = Color.black });
+        OnGenericMessage(new GenericMessageArgs { Countdown = countdown, Message = message, Color = Color.black });
     }
 
     public event EventHandler<GenericMessageArgs> GenericMessage;

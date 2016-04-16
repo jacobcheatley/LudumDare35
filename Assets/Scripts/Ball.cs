@@ -34,9 +34,10 @@ public class Ball : MonoBehaviour
         }
     }
 
-    void Explode()
+    public void Explode()
     {
         GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>().ballCount--;
+        //Particle stuff
         Destroy(gameObject);
     }
 }

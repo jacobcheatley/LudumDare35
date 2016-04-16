@@ -111,7 +111,11 @@ public class ArenaPolygon : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.tag == "Ball")
-            OnBallExit(new BallExitArgs { LastHit = other.GetComponent<Ball>().lastHit });
+        {
+            Ball ballComponent = other.GetComponent<Ball>();
+            OnBallExit(new BallExitArgs { LastHit = ballComponent.lastHit });
+            ballComponent.Explode();
+        }
     }
 
     //Events
