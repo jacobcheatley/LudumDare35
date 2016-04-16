@@ -4,19 +4,18 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(PolygonCollider2D))]
 public class ArenaPolygon : MonoBehaviour
 {
-    [SerializeField]
     [Range(3, 12)]
-    private int sides;
-    [SerializeField]
+    public int sides;
     [Range(2f, 5f)]
-    private float radius;
+    public float radius;
 
     private Mesh mesh;
     private MeshFilter meshFilter;
-    private Vector3[] vertices;
     private PolygonCollider2D polygonCollider2D;
+    [HideInInspector]
+    public Vector3[] vertices;
 
-	void Start ()
+    void Start ()
     {
 	    mesh = new Mesh();
 	    meshFilter = GetComponent<MeshFilter>();
@@ -55,13 +54,9 @@ public class ArenaPolygon : MonoBehaviour
         polygonCollider2D.points = vertices.Select(v => (Vector2)v).ToArray();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Entered");
-    }
-
     void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("Exited");
+        if (other.tag == "Ball")
+            Debug.Log("Ball exited.");
     }
 }
