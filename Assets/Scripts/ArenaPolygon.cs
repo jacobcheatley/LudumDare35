@@ -12,8 +12,7 @@ public class ArenaPolygon : MonoBehaviour
     private Mesh mesh;
     private MeshFilter meshFilter;
     private PolygonCollider2D polygonCollider2D;
-    [HideInInspector]
-    public Vector3[] vertices;
+    [HideInInspector] public Vector3[] vertices;
 
     void Start ()
     {

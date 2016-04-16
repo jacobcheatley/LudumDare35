@@ -174,8 +174,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90efc7e446013ca43b40add7b4945aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axis: Player One
   startAngle: 0
-  angularVelocity: 45
+  maxLinearVelocity: 30
+  linearAcceleration: 0.3
+  deceleration: 0.75
 --- !u!1 &731512164
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55720ba4fb200c84a9df61d7f1063c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 3
 --- !u!1 &1638141606
 GameObject:
   m_ObjectHideFlags: 0
