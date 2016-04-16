@@ -41,8 +41,6 @@ public class AnnouncerTextManager : MonoBehaviour
             case PlayerIndex.Two:
                 DrawText("+1", new Color(22 / 255f, 170 / 255f, 231 / 255f), 2f, 200f);
                 break;
-            case PlayerIndex.AI:
-                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }

@@ -217,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   axis: Player Two
   playerIndex: 2
+  isAI: 1
   startAngle: 180
   maxLinearVelocity: 1300
   linearAcceleration: 500
@@ -501,6 +502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   axis: Player One
   playerIndex: 1
+  isAI: 0
   startAngle: 0
   maxLinearVelocity: 1300
   linearAcceleration: 500
@@ -682,6 +684,7 @@ MonoBehaviour:
   ball: {fileID: 159832, guid: 7c8a02d894ee9c24eb737472181d98ef, type: 2}
   secondsBetweenEvents: 5
   ballCount: 0
+  balls: []
 --- !u!4 &1180637385
 Transform:
   m_ObjectHideFlags: 0

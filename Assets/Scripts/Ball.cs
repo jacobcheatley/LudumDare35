@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] private float speed = 3f;
+    public float speed = 3f;
     [SerializeField] private float angularSpread = 8f;
 
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Renderer rend;
     private TrailRenderer trail;
     [HideInInspector] public PlayerIndex lastHit;
@@ -44,15 +44,18 @@ public class Ball : MonoBehaviour
     public void SpeedUp()
     {
         speed *= 1.5f;
+        rb.velocity *= 1.5f;
     }
 
     public void SpeedDown()
     {
         speed /= 1.5f;
+        rb.velocity /= 1.5f;
     }
 
     public void Reverse()
     {
         speed *= -1f;
+        rb.velocity *= -1f;
     }
 }

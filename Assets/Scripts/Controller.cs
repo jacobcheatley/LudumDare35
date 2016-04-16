@@ -34,7 +34,7 @@ public class Controller : MonoBehaviour
     private Paddle[] paddles;
     private CameraRotation cameraRotation;
     [HideInInspector] public int ballCount = 0;
-    private List<Ball> balls;
+    [HideInInspector] public List<Ball> balls;
     private bool checkForNoBalls = false;
     
     void Start()
@@ -51,8 +51,8 @@ public class Controller : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(secondsBetweenEvents * 3f);
-            secondsBetweenEvents /= 1.5f;
+            yield return new WaitForSeconds(15f);
+            secondsBetweenEvents /= 1.1f;
         }
     }
 
