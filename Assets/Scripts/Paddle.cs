@@ -24,6 +24,7 @@ public class Paddle : MonoBehaviour
     private float linearVelocity;
     [HideInInspector] public float angle;
     [HideInInspector] public Material material;
+    private float multiplier = 1f;
     
     void Start()
 	{
@@ -46,11 +47,16 @@ public class Paddle : MonoBehaviour
         
         linearVelocity = Mathf.Clamp(linearVelocity, -maxLinearVelocity, maxLinearVelocity);
 	    float angularVelocity = linearVelocity / inRadius;
-	    angle += angularVelocity * Time.deltaTime;
+	    angle += angularVelocity * Time.deltaTime * multiplier;
 
         angle %= 360f;
 	    angle = angle < 0 ? angle + 360f : angle;
         transform.position = Quaternion.Euler(0, 0, -angle) * Vector3.right * inRadius;
 	    transform.rotation = Quaternion.Euler(0, 0, 90f - angle);
 	}
+
+    public void Reverse()
+    {
+        multiplier *= -1f;
+    }
 }

@@ -29,8 +29,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b66d538e599aa8469a2d65f8559b5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 400
-  lifeTime: 3
 --- !u!114 &11471932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,7 +50,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 128
+    m_FontSize: 64
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1

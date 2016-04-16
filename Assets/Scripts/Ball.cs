@@ -40,4 +40,19 @@ public class Ball : MonoBehaviour
         //Particle stuff
         Destroy(gameObject);
     }
+
+    public void SpeedUp()
+    {
+        speed *= 1.5f;
+    }
+
+    public void SpeedDown()
+    {
+        speed /= 1.5f;
+    }
+
+    public void Reverse()
+    {
+        speed *= -1f;
+    }
 }

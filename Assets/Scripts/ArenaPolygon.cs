@@ -19,7 +19,6 @@ public class ArenaPolygon : MonoBehaviour
     private MeshFilter meshFilter;
     private PolygonCollider2D polygonCollider2D;
     [HideInInspector] public Vector3[] vertices;
-    private Controller controller;
 
     void Start ()
     {
@@ -27,7 +26,6 @@ public class ArenaPolygon : MonoBehaviour
 	    meshFilter = GetComponent<MeshFilter>();
         meshFilter.mesh = mesh;
 	    polygonCollider2D = GetComponent<PolygonCollider2D>();
-        controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>();
 	    GenerateMesh();
     }
 
@@ -81,6 +79,7 @@ public class ArenaPolygon : MonoBehaviour
     
     private IEnumerator ChangeRadius(float newRadius)
     {
+        newRadius = Mathf.Clamp(newRadius, minRadius, maxRadius);
         float startTime = Time.time;
         float endTime = startTime + 1f;
         while (Time.time < endTime)

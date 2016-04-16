@@ -16,11 +16,10 @@ public enum RandomEvent
     ReversePaddles,
     ReverseBalls,
     NewBall,
-    PaddleSpeedUp,
-    PaddleSpeedDown,
     BallSpeedUp,
     BallSpeedDown,
     CameraSpin,
+    CameraSpeedUp,
     CameraSpeedReverse
 }
 
@@ -33,15 +32,17 @@ public class Controller : MonoBehaviour
 
     private ArenaPolygon arena;
     private Paddle[] paddles;
-    private Camera mainCamera;
+    private CameraRotation cameraRotation;
     [HideInInspector] public int ballCount = 0;
+    private List<Ball> balls;
     private bool checkForNoBalls = false;
     
     void Start()
     {
+        balls = new List<Ball>();
         arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         paddles = GameObject.FindGameObjectsWithTag("Player").Select(p => p.GetComponent<Paddle>()).ToArray();
-        mainCamera = Camera.main;
+        cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
         StartCoroutine(EventLoop());
     }
 
@@ -63,8 +64,9 @@ public class Controller : MonoBehaviour
 
     private void SpawnBall()
     {
-        Instantiate(ball, Vector3.zero, Quaternion.identity);
+        GameObject newBall = Instantiate(ball, Vector3.zero, Quaternion.identity) as GameObject;
         ballCount++;
+        balls.Add(newBall.GetComponent<Ball>());
         checkForNoBalls = true;
     }
 
@@ -78,7 +80,6 @@ public class Controller : MonoBehaviour
         {
             Action a;
             string message;
-            //TODO: Weighted random
             RandomEvent x = RandomRandomEvent();
             #region Event Switch
             switch (x)
@@ -112,7 +113,7 @@ public class Controller : MonoBehaviour
                     message = "♦ = ?";
                     break;
                 case RandomEvent.RadiusUp:
-                    if (arena.radius != arena.maxRadius)
+                    if (arena.radius < arena.maxRadius)
                     {
                         a = arena.RadiusUp;
                         message = "r ++";
@@ -124,7 +125,7 @@ public class Controller : MonoBehaviour
                     }
                     break;
                 case RandomEvent.RadiusDown:
-                    if (arena.radius != arena.minRadius)
+                    if (arena.radius > arena.minRadius)
                     {
                         a = arena.RadiusDown;
                         message = "r --";
@@ -155,14 +156,6 @@ public class Controller : MonoBehaviour
                     a = SpawnBall;
                     message = "O ++";
                     break;
-                case RandomEvent.PaddleSpeedUp:
-                    a = PaddleSpeedUp;
-                    message = "■»» ++";
-                    break;
-                case RandomEvent.PaddleSpeedDown:
-                    a = PaddleSpeedDown;
-                    message = "■»» --";
-                    break;
                 case RandomEvent.BallSpeedUp:
                     a = BallSpeedUp;
                     message = "O»» ++";
@@ -172,11 +165,15 @@ public class Controller : MonoBehaviour
                     message = "O»» --";
                     break;
                 case RandomEvent.CameraSpin:
-                    a = CameraSpin;
+                    a = cameraRotation.CameraSpin;
                     message = "© = ?";
                     break;
+                case RandomEvent.CameraSpeedUp:
+                    a = cameraRotation.SpeedUp;
+                    message = "©»» ++";
+                    break;
                 case RandomEvent.CameraSpeedReverse:
-                    a = CameraSpeedReverse;
+                    a = cameraRotation.Reverse;
                     message = "««©";
                     break;
                 default:
@@ -188,45 +185,44 @@ public class Controller : MonoBehaviour
             yield return new WaitForSeconds(secondsBetweenEvents);
         }
     }
-        
-    private void CameraSpeedReverse()
-    {
-    }
-
-    private void CameraSpin()
-    {
-    }
 
     private void BallSpeedDown()
     {
+        balls.RemoveAll(ball => ball == null);
+        foreach (Ball ball in balls)
+            ball.SpeedDown();
     }
 
     private void BallSpeedUp()
     {
-    }
-
-    private void PaddleSpeedDown()
-    {
-    }
-
-    private void PaddleSpeedUp()
-    {
+        balls.RemoveAll(b => b == null);
+        foreach (Ball ball in balls)
+            ball.SpeedUp();
     }
 
     private void ReverseBalls()
     {
+        balls.RemoveAll(b => b == null);
+        foreach (Ball ball in balls)
+            ball.Reverse();
     }
 
     private void ReversePaddles()
     {
+        foreach (Paddle paddle in paddles)
+            paddle.Reverse();
     }
 
     private void SwapPaddles()
     {
+        float tempAngle = paddles[0].angle;
+        paddles[0].angle = paddles[1].angle;
+        paddles[1].angle = tempAngle;
     }
 
     private RandomEvent RandomRandomEvent()
     {
+        //TODO: Weighted random
         return (RandomEvent)UnityEngine.Random.Range(0, Enum.GetValues(typeof (RandomEvent)).Length);
     }
 
