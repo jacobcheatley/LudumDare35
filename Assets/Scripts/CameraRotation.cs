@@ -32,7 +32,7 @@ public class CameraRotation : MonoBehaviour
 
     public void SpeedUp()
     {
-        speed += 0.5f;
+        speed *= 1.5f;
     }
 
     public void Reverse()

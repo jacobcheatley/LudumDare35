@@ -44,6 +44,16 @@ public class Controller : MonoBehaviour
         paddles = GameObject.FindGameObjectsWithTag("Player").Select(p => p.GetComponent<Paddle>()).ToArray();
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
         StartCoroutine(EventLoop());
+        StartCoroutine(EventSpeedUp());
+    }
+
+    private IEnumerator EventSpeedUp()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(secondsBetweenEvents * 3f);
+            secondsBetweenEvents /= 1.5f;
+        }
     }
 
     private void Update()
@@ -57,7 +67,7 @@ public class Controller : MonoBehaviour
 
     private IEnumerator BeginAgain()
     {
-        SayGenericMessage("BEGIN!");
+        SayGenericMessage("GO");
         yield return new WaitForSeconds(3f);
         SpawnBall();
     }
@@ -72,7 +82,7 @@ public class Controller : MonoBehaviour
 
     private IEnumerator EventLoop()
     {
-        SayGenericMessage("BEGIN!");
+        SayGenericMessage("GO");
         yield return new WaitForSeconds(3f);
         SpawnBall();
         yield return new WaitForSeconds(secondsBetweenEvents - 3f);
@@ -116,29 +126,29 @@ public class Controller : MonoBehaviour
                     if (arena.radius < arena.maxRadius)
                     {
                         a = arena.RadiusUp;
-                        message = "r ++";
+                        message = "R ++";
                     }
                     else
                     {
                         a = arena.RadiusDown;
-                        message = "r --";
+                        message = "R --";
                     }
                     break;
                 case RandomEvent.RadiusDown:
                     if (arena.radius > arena.minRadius)
                     {
                         a = arena.RadiusDown;
-                        message = "r --";
+                        message = "R --";
                     }
                     else
                     {
                         a = arena.RadiusUp;
-                        message = "r ++";
+                        message = "R ++";
                     }
                     break;
                 case RandomEvent.RandomRadius:
                     a = arena.RandomRadius;
-                    message = "r = ?";
+                    message = "R = ?";
                     break;
                 case RandomEvent.SwapPaddles:
                     a = SwapPaddles;
@@ -166,15 +176,15 @@ public class Controller : MonoBehaviour
                     break;
                 case RandomEvent.CameraSpin:
                     a = cameraRotation.CameraSpin;
-                    message = "© = ?";
+                    message = "C = ?";
                     break;
                 case RandomEvent.CameraSpeedUp:
                     a = cameraRotation.SpeedUp;
-                    message = "©»» ++";
+                    message = "C»» ++";
                     break;
                 case RandomEvent.CameraSpeedReverse:
                     a = cameraRotation.Reverse;
-                    message = "««©";
+                    message = "««C";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
