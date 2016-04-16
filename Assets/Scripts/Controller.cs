@@ -28,7 +28,7 @@ public class Controller : MonoBehaviour
     [SerializeField]
     private GameObject ball;
     [Range(5f, 30f)]
-    public float secondsBetweenEvents = 15f;
+    public float secondsBetweenEvents = 20f;
 
     private ArenaPolygon arena;
     private Paddle[] paddles;
@@ -36,7 +36,9 @@ public class Controller : MonoBehaviour
     [HideInInspector] public int ballCount = 0;
     [HideInInspector] public List<Ball> balls;
     private bool checkForNoBalls = false;
-    
+    private List<RandomEvent> weightedEvents;
+
+
     void Start()
     {
         balls = new List<Ball>();
@@ -45,14 +47,15 @@ public class Controller : MonoBehaviour
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
         StartCoroutine(EventLoop());
         StartCoroutine(EventSpeedUp());
+        weightedEvents = EventWeights.WeightedEvents();
     }
 
     private IEnumerator EventSpeedUp()
     {
         while (true)
         {
-            yield return new WaitForSeconds(15f);
-            secondsBetweenEvents /= 1.1f;
+            yield return new WaitForSeconds(20f);
+            secondsBetweenEvents /= 1.05f;
         }
     }
 
@@ -196,6 +199,7 @@ public class Controller : MonoBehaviour
         }
     }
 
+    #region Random Event Methods
     private void BallSpeedDown()
     {
         balls.RemoveAll(ball => ball == null);
@@ -229,11 +233,11 @@ public class Controller : MonoBehaviour
         paddles[0].angle = paddles[1].angle;
         paddles[1].angle = tempAngle;
     }
+    #endregion
 
     private RandomEvent RandomRandomEvent()
     {
-        //TODO: Weighted random
-        return (RandomEvent)UnityEngine.Random.Range(0, Enum.GetValues(typeof (RandomEvent)).Length);
+        return weightedEvents[UnityEngine.Random.Range(0, weightedEvents.Count)];
     }
 
     public void SayGenericMessage(string message, float countdown = 3f)

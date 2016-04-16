@@ -682,7 +682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ball: {fileID: 159832, guid: 7c8a02d894ee9c24eb737472181d98ef, type: 2}
-  secondsBetweenEvents: 5
+  secondsBetweenEvents: 20
   ballCount: 0
   balls: []
 --- !u!4 &1180637385

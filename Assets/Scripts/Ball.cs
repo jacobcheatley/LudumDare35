@@ -55,7 +55,6 @@ public class Ball : MonoBehaviour
 
     public void Reverse()
     {
-        speed *= -1f;
         rb.velocity *= -1f;
     }
 }

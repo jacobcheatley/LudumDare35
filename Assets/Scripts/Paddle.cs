@@ -64,7 +64,8 @@ public class Paddle : MonoBehaviour
 
     private float GetAIInput()
     {
-        Vector2 targetPosition = GetAITarget();
+        bool noneBall;
+        Vector2 targetPosition = GetAITarget(out noneBall);
         if (targetPosition != Vector2.zero)
         {
             // Vector and trig magic
@@ -73,6 +74,10 @@ public class Paddle : MonoBehaviour
             float targetAngle = Mathf.Rad2Deg * Mathf.Atan2(det, dot);
             targetAngle = 360f - (targetAngle < 0 ? 360f + targetAngle : targetAngle);
             float angleDifference = targetAngle - angle;
+
+            if (noneBall && Mathf.Abs(angleDifference) > 100f)
+                return 0;
+
             if (Mathf.Abs(angleDifference) < 10f)
                 return 0;
             else if (angleDifference < 0)
@@ -86,18 +91,21 @@ public class Paddle : MonoBehaviour
         }
     }
 
-    private Vector2 GetAITarget()
+    private Vector2 GetAITarget(out bool noneBall)
     {
         List<Ball> balls = controller.balls;
         float shortestTime = 10000f;
         Vector2 targetPosition = Vector2.zero;
+        noneBall = true;
         foreach (Ball ball in balls)
         {
             // Find potential targets
             if (ball == null)
                 continue;
-            if (ball.lastHit != playerIndex && ball.lastHit != PlayerIndex.None)
+            if (ball.lastHit != playerIndex)
             {
+                if (ball.lastHit == PlayerIndex.None && !noneBall)
+                    continue;
                 // Get information about how soon the ball will hit the edge
                 float speed = ball.speed;
                 Vector2 velocityDir = ball.rb.velocity.normalized;
@@ -108,11 +116,13 @@ public class Paddle : MonoBehaviour
                     if (hit.transform.tag == "Arena")
                     {
                         // Find shortest time
-                        Debug.Log("GOT HIT");
                         float distanceToEdge = (hit.point - position).magnitude;
                         float time = distanceToEdge / speed;
                         if (time < shortestTime)
                         {
+                            if (ball.lastHit != PlayerIndex.None)
+                                noneBall = false;
+
                             shortestTime = time;
                             targetPosition = hit.point;
                         }
