@@ -1,28 +1,37 @@
 ﻿using System;
 using UnityEngine;
 
+public enum PlayerIndex
+{
+    None,
+    One,
+    Two,
+    AI
+}
+
 public class Paddle : MonoBehaviour
 {
     [Header("Player Specific")]
     [SerializeField] private string axis;
+    public PlayerIndex playerIndex;
 
     [Header("General")]
     [SerializeField] private float startAngle = 0f;
-    [SerializeField] private float maxLinearVelocity = 300f;
-    [SerializeField] private float linearAcceleration = 300f;
-    [SerializeField] private float deceleration = 0.75f;
+    [SerializeField] private float maxLinearVelocity = 1000f;
+    [SerializeField] private float linearAcceleration = 500f;
 
     private ArenaPolygon arena;
     private float linearVelocity;
-    private float angle;
-    private Material material;
+    [HideInInspector] public float angle;
+    [HideInInspector] public Material material;
     
     void Start()
 	{
 	    angle = startAngle;
 	    arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         material = GetComponent<Renderer>().material;
-	}
+        GetComponent<TrailRenderer>().sortingLayerName = "Background";
+    }
 
 	void Update()
     {
@@ -33,7 +42,7 @@ public class Paddle : MonoBehaviour
 	    if (Math.Abs(input) > 0.2f)
             linearVelocity -= linearAcceleration * Input.GetAxisRaw(axis) * Time.deltaTime;
         if (Mathf.Sign(input) == Mathf.Sign(linearVelocity) || Math.Abs(input) <= 0.2f)
-            linearVelocity = Mathf.Lerp(linearVelocity, 0, Time.deltaTime * 10f);
+            linearVelocity = Mathf.Lerp(linearVelocity, 0, Time.deltaTime * 5f);
         
         linearVelocity = Mathf.Clamp(linearVelocity, -maxLinearVelocity, maxLinearVelocity);
 	    float angularVelocity = linearVelocity / inRadius;

@@ -3,15 +3,40 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float angularSpread = 8f;
+
     private Rigidbody2D rb;
+    private Renderer rend;
+    private TrailRenderer trail;
+    private PlayerIndex lastHit;
 
 	void Start()
 	{
+        lastHit = PlayerIndex.None;
 	    rb = GetComponent<Rigidbody2D>();
+//	    rb.velocity = UnityEngine.Random.insideUnitCircle.normalized * speed;
+        rb.velocity = Vector2.right * speed;
+	    rend = GetComponent<Renderer>();
+	    trail = GetComponent<TrailRenderer>();
+	    trail.sortingLayerName = "Background";
 	}
 
     void Update()
     {
-        rb.MovePosition(rb.position + Vector2.up * Time.deltaTime);
+//        rb.velocity = rb.velocity.normalized * speed;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Kek");
+        if (other.gameObject.tag == "Player")
+        {
+            Paddle paddle = other.gameObject.GetComponent<Paddle>();
+            float reflectionAngle = 180f - paddle.angle + UnityEngine.Random.Range(-angularSpread, angularSpread);
+            rb.velocity = Quaternion.Euler(0, 0, reflectionAngle) * Vector2.right * speed;
+            trail.material = rend.material = paddle.material;
+            lastHit = paddle.playerIndex;
+        }
     }
 }
