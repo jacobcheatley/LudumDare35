@@ -148,6 +148,8 @@ public class Controller : MonoBehaviour
                 if (speedUpBetweenEvents)
                     StartCoroutine(EventSpeedUp());
             }
+            else
+                StartCoroutine(BeginAgain());
         }
     }
 
