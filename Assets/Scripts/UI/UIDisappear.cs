@@ -19,14 +19,20 @@ public class UIDisappear : MonoBehaviour
         float startTime = Time.time;
         float endTime = startTime + lifeTime;
         Vector3 destination = initialPosition + UnityEngine.Random.insideUnitCircle.normalized * 50f;
+        float initialTextAlpha = 1f;
+        float initialImageAlpha = 1f;
+        if (textComponent != null)
+            initialTextAlpha = textComponent.color.a;
+        if (imageComponent != null)
+            initialImageAlpha = imageComponent.color.a;
         while (Time.time < endTime)
         {
             float percent = (Time.time - startTime) / lifeTime;
-            float alpha = 1 - percent;
+            float alphaMultiplier = 1 - percent;
             if (textComponent != null)
-                textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, alpha);
+                textComponent.color = new Color(textComponent.color.r, textComponent.color.g, textComponent.color.b, alphaMultiplier * initialTextAlpha);
             if (imageComponent != null)
-                imageComponent.color = new Color(imageComponent.color.r, imageComponent.color.g, imageComponent.color.b, alpha);
+                imageComponent.color = new Color(imageComponent.color.r, imageComponent.color.g, imageComponent.color.b, alphaMultiplier * initialImageAlpha);
             transform.position = Vector2.Lerp(initialPosition, destination, percent);
             yield return null;
         }
