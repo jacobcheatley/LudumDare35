@@ -25,6 +25,12 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = Time.timeScale == 0 ? 1 : 0;
     }
 
+    public void ForceUnpause()
+    {
+        canvas.enabled = false;
+        Time.timeScale = 1;
+    }
+
     public void Restart()
     {
         SceneManager.LoadScene("Main");
