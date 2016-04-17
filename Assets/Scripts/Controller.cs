@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 //using UnityEngine.EventSystems;
@@ -39,6 +40,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private List<AudioClip> countdownSounds;
     [SerializeField] private DictionaryPlayerSound winSounds;
     [SerializeField] private AudioClip ggSound;
+    [SerializeField] private AudioMixer audioMixer;
 
     private ArenaPolygon arena;
     private Paddle[] paddles;
@@ -69,6 +71,7 @@ public class Controller : MonoBehaviour
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
         announcerAudio = GetComponent<AudioSource>();
         weightedEvents = EventWeights.WeightedEvents();
+        audioMixer.SetFloat("MusicPitch", 1f);
     }
 
     private void BallExit(object sender, BallExitArgs e)
@@ -111,8 +114,25 @@ public class Controller : MonoBehaviour
             restartButtonColors.pressedColor = Constants.PlayerTwoColour;
             restartButton.colors = restartButtonColors;
         }
+        StartCoroutine(LowerMusicPitch());
         StartCoroutine(AnnouncerSayWinner(playerIndex));
         StartCoroutine(ChangeCameraBackground(playerIndex));
+    }
+
+    private IEnumerator LowerMusicPitch()
+    {
+        float currentPitch;
+        float endPitch = 0.7f;
+        float percent = 0f;
+        float duration = 5f;
+        while (percent < 1)
+        {
+            audioMixer.GetFloat("MusicPitch", out currentPitch);
+            audioMixer.SetFloat("MusicPitch", Mathf.Lerp(currentPitch, endPitch, percent));
+            percent += Time.deltaTime / duration;
+            yield return null;
+        }
+        audioMixer.SetFloat("MusicPitch", endPitch);
     }
 
     private IEnumerator AnnouncerSayWinner(PlayerIndex playerIndex)

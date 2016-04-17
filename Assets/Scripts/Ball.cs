@@ -19,10 +19,7 @@ public class Ball : MonoBehaviour
 	{
         lastHit = PlayerIndex.None;
 	    rb = GetComponent<Rigidbody2D>();
-//	    rb.velocity = UnityEngine.Random.insideUnitCircle.normalized * speed;
-	    int sides = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>().sides;
-	    float angle = (360f / sides) * UnityEngine.Random.Range(0, sides);
-        rb.velocity = Quaternion.Euler(0, 0, angle) * Vector2.right * speed;
+        rb.velocity = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 2) * 180f) * Vector2.right * speed;
 	    rend = GetComponent<Renderer>();
 	    trail = GetComponent<TrailRenderer>();
 	    trail.sortingLayerName = "Background";

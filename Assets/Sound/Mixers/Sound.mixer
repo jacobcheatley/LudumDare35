@@ -18,6 +18,8 @@ AudioMixerController:
     name: AnnouncerVolume
   - guid: e331ff9146314864a89510836abae172
     name: MasterVolume
+  - guid: 810cb8a7b4b0fa041b61e24834170203
+    name: MusicPitch
   - guid: e88931b5344463646a028ef88c90dac3
     name: MusicVolume
   - guid: fc8073b622f03254fbce1152ad459f5c
@@ -163,6 +165,16 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 4a5d0584eeb300e43a1fa43e7df11ed0
   m_FloatValues:
+    7e423e10ca154ad41a6df3bf534cfa1f: 250
+    002b6220dafccb4458f61a569827daea: 1
     6aec15c1e32f10441a9135f6fdd0317e: 1
+    b9240c02b7af845409adbf73ed02ebe4: 0.02
+    f6cdd3539563bfe4b89d039041347408: 100
+    a539a6a4b32d981498b2292af9a277f3: 1
     e88931b5344463646a028ef88c90dac3: 0
+    810cb8a7b4b0fa041b61e24834170203: 1
+    f5421358b17b8a2449e146529d209c09: 0.05
+    50ef747835dfd4e4cba06f8ddba4e448: 2
+    019a19fd484280f42a39d72021baaed2: 20
+    66e0807e7b57b1043bbfa8ef0c7bc724: 22000
   m_TransitionOverrides: {}

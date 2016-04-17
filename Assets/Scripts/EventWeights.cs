@@ -7,21 +7,21 @@ public static class EventWeights
 {
     private static Dictionary<RandomEvent, int> weights = new Dictionary<RandomEvent, int>
     {
-        { RandomEvent.SidesUp, 3},
-        { RandomEvent.SidesDown, 3},
-        { RandomEvent.RandomSides, 1},
-        { RandomEvent.RadiusUp, 3},
-        { RandomEvent.RadiusDown, 3},
-        { RandomEvent.RandomRadius, 1},
+        { RandomEvent.SidesUp, 6},
+        { RandomEvent.SidesDown, 6},
+        { RandomEvent.RandomSides, 4},
+        { RandomEvent.RadiusUp, 6},
+        { RandomEvent.RadiusDown, 6},
+        { RandomEvent.RandomRadius, 4},
         { RandomEvent.SwapPaddles, 1},
         { RandomEvent.ReversePaddles, 1},
-        { RandomEvent.ReverseBalls, 1},
-        { RandomEvent.NewBall, 10},
-        { RandomEvent.BallSpeedUp, 5},
-        { RandomEvent.BallSpeedDown, 2},
+        { RandomEvent.ReverseBalls, 3},
+        { RandomEvent.NewBall, 25},
+        { RandomEvent.BallSpeedUp, 10},
+        { RandomEvent.BallSpeedDown, 5},
         { RandomEvent.CameraSpin, 1},
-        { RandomEvent.CameraSpeedUp, 1},
-        { RandomEvent.CameraSpeedReverse, 3}
+        { RandomEvent.CameraSpeedUp, 2},
+        { RandomEvent.CameraSpeedReverse, 4}
     };
 
     public static List<RandomEvent> WeightedEvents()

@@ -30,6 +30,11 @@ public class Paddle : MonoBehaviour
 
     //AI Stuff
     private Controller controller;
+    private float hardMaxLinearVelocity = 1300f;
+    private float hardLinearAcceleration = 500f;
+    private float easyMaxLinearVelocity = 850f;
+    private float easyLinearAcceleration = 250f;
+    private bool isEasy = false;
     
     void Start()
 	{
@@ -147,6 +152,22 @@ public class Paddle : MonoBehaviour
     {
         isAI = true;
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>();
+        if (isEasy)
+        {
+            maxLinearVelocity = easyMaxLinearVelocity;
+            linearAcceleration = easyLinearAcceleration;
+        }
+        else
+        {
+            maxLinearVelocity = hardMaxLinearVelocity;
+            linearAcceleration = hardLinearAcceleration;
+        }
+    }
+
+    public void SetEasyAI(bool value)
+    {
+        isEasy = value;
+        
     }
 
     public void Reverse()
