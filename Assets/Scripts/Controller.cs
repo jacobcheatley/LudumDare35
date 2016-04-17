@@ -35,6 +35,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private Canvas menuCanvas;
     [SerializeField] private Canvas gameOverCanvas;
     [SerializeField] private Button restartButton;
+    [SerializeField] private GameObject superText;
+    [SerializeField] private GameObject hexapongText;
     [Header("Sounds")]
     [SerializeField] private DictionaryEventSound eventSounds;
     [SerializeField] private List<AudioClip> countdownSounds;
@@ -72,6 +74,40 @@ public class Controller : MonoBehaviour
         announcerAudio = GetComponent<AudioSource>();
         weightedEvents = EventWeights.WeightedEvents();
         audioMixer.SetFloat("MusicPitch", 1f);
+        StartCoroutine(AnimateSuperHexapongText());
+    }
+
+    private IEnumerator AnimateSuperHexapongText()
+    {
+        GameObject supercopy = Instantiate(superText, superText.transform.position, Quaternion.identity) as GameObject;
+        supercopy.transform.SetParent(superText.transform.parent);
+        float delay = 0.7f;
+        StartCoroutine(AnimateTextPiece(supercopy));
+        yield return new WaitForSeconds(delay);
+        GameObject hexapongCopy = Instantiate(hexapongText, hexapongText.transform.position, Quaternion.identity) as GameObject;
+        hexapongCopy.transform.SetParent(hexapongText.transform.parent);
+        StartCoroutine(AnimateTextPiece(hexapongCopy));
+    }
+
+    private IEnumerator AnimateTextPiece(GameObject textPiece)
+    {
+        Debug.Log("kek");
+        float duration = 0.5f;
+        Vector3 intialScale = Vector3.one;
+        Vector3 goalScale = new Vector3(1.25f, 1.25f, 1f);
+        Text textComponent = textPiece.GetComponent<Text>();
+        Color initialColor = textComponent.color;
+        Color goalColor = initialColor;
+        goalColor.a = 0f;
+        float percent = 0f;
+        while (percent < 1f)
+        {
+            textPiece.transform.localScale = Vector3.Lerp(intialScale, goalScale, percent);
+            textComponent.color = Color.Lerp(initialColor, goalColor, percent);
+            percent += Time.deltaTime / duration;
+            yield return null;
+        }
+        Destroy(textPiece);
     }
 
     private void BallExit(object sender, BallExitArgs e)
