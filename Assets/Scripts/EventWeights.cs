@@ -7,12 +7,12 @@ public static class EventWeights
 {
     private static Dictionary<RandomEvent, int> weights = new Dictionary<RandomEvent, int>
     {
-        { RandomEvent.SidesUp, 6},
-        { RandomEvent.SidesDown, 6},
-        { RandomEvent.RandomSides, 4},
-        { RandomEvent.RadiusUp, 6},
-        { RandomEvent.RadiusDown, 6},
-        { RandomEvent.RandomRadius, 4},
+        { RandomEvent.SidesUp, 9},
+        { RandomEvent.SidesDown, 9},
+        { RandomEvent.RandomSides, 6},
+        { RandomEvent.RadiusUp, 9},
+        { RandomEvent.RadiusDown, 9},
+        { RandomEvent.RandomRadius, 6},
         { RandomEvent.SwapPaddles, 1},
         { RandomEvent.ReversePaddles, 1},
         { RandomEvent.ReverseBalls, 3},

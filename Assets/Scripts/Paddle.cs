@@ -35,7 +35,8 @@ public class Paddle : MonoBehaviour
     private float easyMaxLinearVelocity = 850f;
     private float easyLinearAcceleration = 250f;
     private bool isEasy = false;
-    
+    private bool gameStarted = false;
+
     void Start()
 	{
 	    angle = startAngle;
@@ -59,8 +60,12 @@ public class Paddle : MonoBehaviour
 	void Update()
     {
         float inRadius = (arena.radius * Mathf.Cos(Mathf.PI / arena.sides) - 0.4f);
+	    float input;
 
-	    float input = isAI ? GetAIInput() : Input.GetAxisRaw(axis);
+	    if (gameStarted)
+	        input = isAI ? GetAIInput() : Input.GetAxisRaw(axis);
+	    else
+	        input = Time.time % 15 < 7.5f ? -1f : 1f;
 
 	    if (Math.Abs(input) > 0.2f)
             linearVelocity -= linearAcceleration * input * Time.deltaTime;
@@ -167,7 +172,11 @@ public class Paddle : MonoBehaviour
     public void SetEasyAI(bool value)
     {
         isEasy = value;
-        
+    }
+
+    public void GameStart()
+    {
+        gameStarted = true;
     }
 
     public void Reverse()

@@ -56,7 +56,7 @@ public class Controller : MonoBehaviour
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
     private bool gameOver = false;
-    private float secondsBetweenEvents = 20f;
+    private float secondsBetweenEvents = 15f;
     private bool noEvents = false;
     private bool speedUpBetweenEvents = true;
     private float baseBallSpeed = 3f;
