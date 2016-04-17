@@ -18,7 +18,7 @@ public class UIDisappear : MonoBehaviour
         Vector2 initialPosition = transform.position;
         float startTime = Time.time;
         float endTime = startTime + lifeTime;
-        Vector3 destination = initialPosition + UnityEngine.Random.insideUnitCircle.normalized * 4f;
+        Vector3 destination = initialPosition + UnityEngine.Random.insideUnitCircle.normalized * 50f;
         while (Time.time < endTime)
         {
             float percent = (Time.time - startTime) / lifeTime;

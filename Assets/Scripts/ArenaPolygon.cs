@@ -8,11 +8,11 @@ public class ArenaPolygon : MonoBehaviour
 {
     [Range(3, 12)]
     public int sides;
-    [Range(2f, 5f)]
+    [Range(3f, 5f)]
     public float radius;
     public int minSides = 3;
     public int maxSides = 12;
-    public float minRadius = 2f;
+    public float minRadius = 3f;
     public float maxRadius = 5f;
 
     private Mesh mesh;
@@ -89,12 +89,12 @@ public class ArenaPolygon : MonoBehaviour
 
     public void RadiusUp()
     {
-        StartCoroutine(ChangeRadius(radius + 1f));
+        StartCoroutine(ChangeRadius(radius + 0.5f));
     }
 
     public void RadiusDown()
     {
-        StartCoroutine(ChangeRadius(radius - 1f));
+        StartCoroutine(ChangeRadius(radius - 0.5f));
     }
 
     public void RandomRadius()

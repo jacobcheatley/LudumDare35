@@ -46,9 +46,17 @@ public class Ball : MonoBehaviour
         */
     }
 
+    void Update()
+    {
+        // Fixes radius shrinking bug
+        if (transform.position.sqrMagnitude > 30f)
+            Explode();
+    }
+
     public void Explode()
     {
         GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>().ballCount--;
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>().StartShake(0.2f, 0.05f);
         //Particle stuff
         Destroy(gameObject);
     }

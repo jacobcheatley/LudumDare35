@@ -38,6 +38,7 @@ public class Controller : MonoBehaviour
     [HideInInspector] public List<Ball> balls;
     private bool checkForNoBalls = false;
     private List<RandomEvent> weightedEvents;
+    private bool begun = false;
 
     void Start()
     {
@@ -50,9 +51,12 @@ public class Controller : MonoBehaviour
 
     public void BeginGame()
     {
-        Debug.Log("Begin");
-        StartCoroutine(EventLoop());
-        StartCoroutine(EventSpeedUp());
+        if (!begun)
+        {
+            begun = true;
+            StartCoroutine(EventLoop());
+            StartCoroutine(EventSpeedUp());
+        }
     }
 
     private IEnumerator EventSpeedUp()

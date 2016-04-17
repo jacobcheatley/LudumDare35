@@ -37,7 +37,19 @@ public class Paddle : MonoBehaviour
 	    arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         material = GetComponent<Renderer>().material;
         GetComponent<TrailRenderer>().sortingLayerName = "Background";
+        SetupCollider();
 	}
+
+    private void SetupCollider()
+    {
+        EdgeCollider2D polygon = GetComponent<EdgeCollider2D>();
+        polygon.points = new Vector2[]
+        {
+            new Vector2(-0.5f, 0f),
+            new Vector2(0f, -0.4f),
+            new Vector2(0.5f, 0f),
+        };
+    }
 
 	void Update()
     {
@@ -73,7 +85,7 @@ public class Paddle : MonoBehaviour
             targetAngle = 360f - (targetAngle < 0 ? 360f + targetAngle : targetAngle);
             float angleDifference = targetAngle - angle;
 
-            if (noneBall && Mathf.Abs(angleDifference) > 100f)
+            if (noneBall && Mathf.Abs(angleDifference) > 130f)
                 return 0;
 
             if (Mathf.Abs(angleDifference) < 10f)
