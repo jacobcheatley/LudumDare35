@@ -262,7 +262,8 @@ public class Controller : MonoBehaviour
     public void SayGenericMessage(string message, float countdown = 3f)
     {
         OnGenericMessage(new GenericMessageArgs { Countdown = countdown, Message = message, Color = Color.black });
-        StartCoroutine(AnnouncerSayCountDown((int)countdown));
+        if (countdown > 0f)
+            StartCoroutine(AnnouncerSayCountDown((int)countdown));
     }
 
     private IEnumerator AnnouncerSayCountDown(int countdown)
