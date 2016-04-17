@@ -30,8 +30,6 @@ public class Controller : MonoBehaviour
 {
     [Header("Gameplay")]
     [SerializeField] private GameObject ball;
-    [Range(5f, 30f)]
-    public float secondsBetweenEvents = 20f;
     [Header("UI")]
     [SerializeField] private Canvas menuCanvas;
     [SerializeField] private Canvas gameOverCanvas;
@@ -56,7 +54,11 @@ public class Controller : MonoBehaviour
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
     private bool gameOver = false;
-    
+    private float secondsBetweenEvents = 20f;
+    private bool noEvents = false;
+    private bool speedUpBetweenEvents = true;
+    private float baseBallSpeed = 3f;
+
     void Start()
     {
         balls = new List<Ball>();
@@ -71,25 +73,33 @@ public class Controller : MonoBehaviour
 
     private void BallExit(object sender, BallExitArgs e)
     {
-        switch (e.LastHit)
+        if (!gameOver)
         {
-            case PlayerIndex.None:
-                break;
-            case PlayerIndex.One:
-                playerOneScore++;
-                if (!infiniteScore && playerOneScore >= maxScore)
-                    WinGame(e.LastHit);
-                break;
-            case PlayerIndex.Two:
-                playerTwoScore++;
-                if (!infiniteScore && playerTwoScore >= maxScore)
-                    WinGame(e.LastHit);
-                break;
+            switch (e.LastHit)
+            {
+                case PlayerIndex.None:
+                    break;
+                case PlayerIndex.One:
+                    playerOneScore++;
+                    if (!infiniteScore && playerOneScore >= maxScore)
+                        WinGame(e.LastHit);
+                    break;
+                case PlayerIndex.Two:
+                    playerTwoScore++;
+                    if (!infiniteScore && playerTwoScore >= maxScore)
+                        WinGame(e.LastHit);
+                    break;
+            }
         }
     }
 
     private void WinGame(PlayerIndex playerIndex)
     {
+        foreach (Ball ball1 in balls)
+        {
+            if (ball1 != null)
+                ball1.Explode();
+        }
         gameOver = true;
         menuCanvas.enabled = false;
         gameOverCanvas.enabled = true;
@@ -132,8 +142,12 @@ public class Controller : MonoBehaviour
         if (!begun)
         {
             begun = true;
-            StartCoroutine(EventLoop());
-            StartCoroutine(EventSpeedUp());
+            if (!noEvents)
+            {
+                StartCoroutine(EventLoop());
+                if (speedUpBetweenEvents)
+                    StartCoroutine(EventSpeedUp());
+            }
         }
     }
 
@@ -141,7 +155,7 @@ public class Controller : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(20f);
+            yield return new WaitForSeconds(secondsBetweenEvents);
             secondsBetweenEvents /= 1.05f;
         }
     }
@@ -289,7 +303,9 @@ public class Controller : MonoBehaviour
     {
         GameObject newBall = Instantiate(ball, Vector3.zero, Quaternion.identity) as GameObject;
         ballCount++;
-        balls.Add(newBall.GetComponent<Ball>());
+        Ball newBallComponent = newBall.GetComponent<Ball>();
+        newBallComponent.speed = baseBallSpeed;
+        balls.Add(newBallComponent);
         checkForNoBalls = true;
     }
 
@@ -354,6 +370,23 @@ public class Controller : MonoBehaviour
         maxScore = (int)value;
         if (maxScore == 31) // TODO: FIX Ugly hardcoding
             infiniteScore = true;
+    }
+
+    public void SetEventTime(float value)
+    {
+        secondsBetweenEvents = (int)value;
+        if (secondsBetweenEvents == 31) // TODO: FIX Ugly hardcoding
+            noEvents = true;
+    }
+
+    public void SetSpeedUp(bool value)
+    {
+        speedUpBetweenEvents = value;
+    }
+
+    public void SetBallSpeed(float value)
+    {
+        baseBallSpeed = value;
     }
 
     public event EventHandler<GenericMessageArgs> GenericMessage;
