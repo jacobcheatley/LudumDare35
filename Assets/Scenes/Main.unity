@@ -1189,7 +1189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be726c9e4dd86048806b333452757a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 159832, guid: 7c8a02d894ee9c24eb737472181d98ef, type: 2}
+  ball: {fileID: 137100, guid: 7c8a02d894ee9c24eb737472181d98ef, type: 2}
   secondsBetweenEvents: 20
   ballCount: 0
   balls: []
@@ -1389,6 +1389,68 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1444416964}
+--- !u!1001 &1496072360
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 3.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 462244, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 19876176, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &1496072361 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 171586, guid: 68b4168cacc8f6147bddee29da5935d8, type: 2}
+  m_PrefabInternal: {fileID: 1496072360}
+--- !u!114 &1496072362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1496072361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e515c9e044dcfc04a943288838f7605d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 2
 --- !u!1 &1567857163
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +1461,7 @@ GameObject:
   - 224: {fileID: 1567857164}
   - 222: {fileID: 1567857165}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Super Hexapong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1731,7 +1793,7 @@ GameObject:
   - 4: {fileID: 1804915095}
   - 114: {fileID: 1804915094}
   m_Layer: 0
-  m_Name: Pause
+  m_Name: Pause Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,8 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public float speed = 3f;
-//    [SerializeField] private float angularSpread = 8f;
+    [SerializeField] private GameObject particleParent;
+    //    [SerializeField] private float angularSpread = 8f;
 
     [HideInInspector] public Rigidbody2D rb;
     private Renderer rend;
@@ -16,7 +17,9 @@ public class Ball : MonoBehaviour
         lastHit = PlayerIndex.None;
 	    rb = GetComponent<Rigidbody2D>();
 //	    rb.velocity = UnityEngine.Random.insideUnitCircle.normalized * speed;
-        rb.velocity = Vector2.right * speed;
+	    int sides = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>().sides;
+	    float angle = (360f / sides) * UnityEngine.Random.Range(0, sides);
+        rb.velocity = Quaternion.Euler(0, 0, angle) * Vector2.right * speed;
 	    rend = GetComponent<Renderer>();
 	    trail = GetComponent<TrailRenderer>();
 	    trail.sortingLayerName = "Background";
@@ -57,6 +60,12 @@ public class Ball : MonoBehaviour
     {
         GameObject.FindGameObjectWithTag("GameController").GetComponent<Controller>().ballCount--;
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>().StartShake(0.2f, 0.05f);
+        GameObject newParticleParent = Instantiate(particleParent, transform.position, Quaternion.identity) as GameObject;
+        ParticleSystem particle = newParticleParent.transform.GetComponentInChildren<ParticleSystem>();
+        float angle = (float)Math.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
+        newParticleParent.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        particle.GetComponent<Renderer>().material = rend.material;
+        particle.Play();
         //Particle stuff
         Destroy(gameObject);
     }
