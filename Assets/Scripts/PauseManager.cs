@@ -1,7 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Audio;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
@@ -35,10 +32,6 @@ public class PauseManager : MonoBehaviour
 
     public void Quit()
     {
-        #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-        #else
         Application.Quit();
-        #endif
     }
 }

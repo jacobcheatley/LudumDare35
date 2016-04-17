@@ -583,3 +583,4 @@ public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>
 }
 
 [Serializable] public class DictionaryEventSound : SerializableDictionary<RandomEvent, AudioClip> { };
+[Serializable] public class DictionaryPlayerSound : SerializableDictionary<PlayerIndex, AudioClip> { };

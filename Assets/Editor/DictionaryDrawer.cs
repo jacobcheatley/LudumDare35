@@ -174,3 +174,5 @@ public abstract class DictionaryDrawer<TK, TV> : PropertyDrawer
 
 [CustomPropertyDrawer(typeof(DictionaryEventSound))]
 public class MyDictionaryDrawer1 : DictionaryDrawer<RandomEvent, AudioClip> { }
+[CustomPropertyDrawer(typeof(DictionaryPlayerSound))]
+public class MyDictionaryDrawer2 : DictionaryDrawer<PlayerIndex, AudioClip> { }

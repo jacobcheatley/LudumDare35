@@ -36,10 +36,10 @@ public class AnnouncerTextManager : MonoBehaviour
             case PlayerIndex.None:
                 break;
             case PlayerIndex.One:
-                DrawText("+1", new Color(229 / 255f, 125 / 255f, 13 / 255f), 2f, 200f);
+                DrawText("+1", Constants.PlayerOneColour, 2f, 200f);
                 break;
             case PlayerIndex.Two:
-                DrawText("+1", new Color(22 / 255f, 170 / 255f, 231 / 255f), 2f, 200f);
+                DrawText("+1", Constants.PlayerTwoColour, 2f, 200f);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

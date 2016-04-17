@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+
 //using UnityEngine.EventSystems;
 
 public enum RandomEvent
@@ -26,12 +28,19 @@ public enum RandomEvent
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject ball;
+    [Header("Gameplay")]
+    [SerializeField] private GameObject ball;
     [Range(5f, 30f)]
     public float secondsBetweenEvents = 20f;
+    [Header("UI")]
+    [SerializeField] private Canvas menuCanvas;
+    [SerializeField] private Canvas gameOverCanvas;
+    [SerializeField] private Button restartButton;
+    [Header("Sounds")]
     [SerializeField] private DictionaryEventSound eventSounds;
     [SerializeField] private List<AudioClip> countdownSounds;
+    [SerializeField] private DictionaryPlayerSound winSounds;
+    [SerializeField] private AudioClip ggSound;
 
     private ArenaPolygon arena;
     private Paddle[] paddles;
@@ -42,15 +51,80 @@ public class Controller : MonoBehaviour
     private List<RandomEvent> weightedEvents;
     private bool begun = false;
     private AudioSource announcerAudio;
-
+    private int maxScore = 10;
+    private bool infiniteScore = false;
+    private int playerOneScore = 0;
+    private int playerTwoScore = 0;
+    private bool gameOver = false;
+    
     void Start()
     {
         balls = new List<Ball>();
         arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
+        arena.BallExit += BallExit;
         paddles = GameObject.FindGameObjectsWithTag("Player").Select(p => p.GetComponent<Paddle>()).ToArray();
+        gameOverCanvas.enabled = false;
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
         announcerAudio = GetComponent<AudioSource>();
         weightedEvents = EventWeights.WeightedEvents();
+    }
+
+    private void BallExit(object sender, BallExitArgs e)
+    {
+        switch (e.LastHit)
+        {
+            case PlayerIndex.None:
+                break;
+            case PlayerIndex.One:
+                playerOneScore++;
+                if (!infiniteScore && playerOneScore >= maxScore)
+                    WinGame(e.LastHit);
+                break;
+            case PlayerIndex.Two:
+                playerTwoScore++;
+                if (!infiniteScore && playerTwoScore >= maxScore)
+                    WinGame(e.LastHit);
+                break;
+        }
+    }
+
+    private void WinGame(PlayerIndex playerIndex)
+    {
+        gameOver = true;
+        menuCanvas.enabled = false;
+        gameOverCanvas.enabled = true;
+        StopAllCoroutines();
+        if (playerIndex == PlayerIndex.Two)
+        {
+            ColorBlock restartButtonColors = restartButton.colors;
+            restartButtonColors.highlightedColor = Constants.PlayerTwoColour;
+            restartButtonColors.pressedColor = Constants.PlayerTwoColour;
+            restartButton.colors = restartButtonColors;
+        }
+        StartCoroutine(AnnouncerSayWinner(playerIndex));
+        StartCoroutine(ChangeCameraBackground(playerIndex));
+    }
+
+    private IEnumerator AnnouncerSayWinner(PlayerIndex playerIndex)
+    {
+        announcerAudio.PlayOneShot(ggSound);
+        yield return new WaitForSeconds(1f);
+        announcerAudio.PlayOneShot(winSounds[playerIndex]);
+    }
+
+    private IEnumerator ChangeCameraBackground(PlayerIndex playerIndex)
+    {
+        Camera camera = cameraRotation.gameObject.GetComponent<Camera>();
+        Color to = playerIndex == PlayerIndex.One ? Constants.PlayerOneColour : Constants.PlayerTwoColour;
+        float percent = 0;
+        float time = 5f;
+        while (percent < 1)
+        {
+            camera.backgroundColor = Color.Lerp(camera.backgroundColor, to, percent);
+            percent += Time.deltaTime / time;
+            yield return null;
+        }
+        camera.backgroundColor = to;
     }
 
     public void BeginGame()
@@ -74,7 +148,7 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        if (checkForNoBalls && ballCount == 0)
+        if (checkForNoBalls && ballCount == 0 && !gameOver)
         {
             checkForNoBalls = false;
             StartCoroutine(BeginAgain());
@@ -273,6 +347,13 @@ public class Controller : MonoBehaviour
             announcerAudio.PlayOneShot(countdownSounds[i]);
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    public void SetScoreLimit(float value)
+    {
+        maxScore = (int)value;
+        if (maxScore == 31) // TODO: FIX Ugly hardcoding
+            infiniteScore = true;
     }
 
     public event EventHandler<GenericMessageArgs> GenericMessage;
