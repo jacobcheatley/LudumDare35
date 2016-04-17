@@ -30,6 +30,8 @@ public class Controller : MonoBehaviour
     private GameObject ball;
     [Range(5f, 30f)]
     public float secondsBetweenEvents = 20f;
+    [SerializeField] private DictionaryEventSound eventSounds;
+    [SerializeField] private List<AudioClip> countdownSounds;
 
     private ArenaPolygon arena;
     private Paddle[] paddles;
@@ -39,6 +41,7 @@ public class Controller : MonoBehaviour
     private bool checkForNoBalls = false;
     private List<RandomEvent> weightedEvents;
     private bool begun = false;
+    private AudioSource announcerAudio;
 
     void Start()
     {
@@ -46,6 +49,7 @@ public class Controller : MonoBehaviour
         arena = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaPolygon>();
         paddles = GameObject.FindGameObjectsWithTag("Player").Select(p => p.GetComponent<Paddle>()).ToArray();
         cameraRotation = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraRotation>();
+        announcerAudio = GetComponent<AudioSource>();
         weightedEvents = EventWeights.WeightedEvents();
     }
 
@@ -84,14 +88,6 @@ public class Controller : MonoBehaviour
         SpawnBall();
     }
 
-    private void SpawnBall()
-    {
-        GameObject newBall = Instantiate(ball, Vector3.zero, Quaternion.identity) as GameObject;
-        ballCount++;
-        balls.Add(newBall.GetComponent<Ball>());
-        checkForNoBalls = true;
-    }
-
     private IEnumerator EventLoop()
     {
         SayGenericMessage("GO");
@@ -103,7 +99,6 @@ public class Controller : MonoBehaviour
             Action a;
             string message;
             RandomEvent x = RandomRandomEvent();
-            x = RandomEvent.RandomRadius;
             #region Event Switch
             switch (x)
             {
@@ -204,12 +199,26 @@ public class Controller : MonoBehaviour
             }
             #endregion
             SayGenericMessage(message, 0f);
+            AnnouncerSayEvent(x);
             a();
             yield return new WaitForSeconds(secondsBetweenEvents);
         }
     }
 
+    private void AnnouncerSayEvent(RandomEvent randomEvent)
+    {
+        announcerAudio.PlayOneShot(eventSounds[randomEvent]);
+    }
+
     #region Random Event Methods
+    private void SpawnBall()
+    {
+        GameObject newBall = Instantiate(ball, Vector3.zero, Quaternion.identity) as GameObject;
+        ballCount++;
+        balls.Add(newBall.GetComponent<Ball>());
+        checkForNoBalls = true;
+    }
+
     private void BallSpeedDown()
     {
         balls.RemoveAll(ball => ball == null);
@@ -253,6 +262,16 @@ public class Controller : MonoBehaviour
     public void SayGenericMessage(string message, float countdown = 3f)
     {
         OnGenericMessage(new GenericMessageArgs { Countdown = countdown, Message = message, Color = Color.black });
+        StartCoroutine(AnnouncerSayCountDown((int)countdown));
+    }
+
+    private IEnumerator AnnouncerSayCountDown(int countdown)
+    {
+        for (int i = countdown; i >= 0; i--)
+        {
+            announcerAudio.PlayOneShot(countdownSounds[i]);
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     public event EventHandler<GenericMessageArgs> GenericMessage;

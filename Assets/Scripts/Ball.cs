@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     public float speed = 3f;
     [SerializeField] private GameObject particleParent;
+    [SerializeField] private List<AudioClip> bounceSounds;
     //    [SerializeField] private float angularSpread = 8f;
 
     [HideInInspector] public Rigidbody2D rb;
     private Renderer rend;
     private TrailRenderer trail;
     [HideInInspector] public PlayerIndex lastHit;
+    private AudioSource audioSource;
 
 	void Start()
 	{
@@ -23,6 +26,7 @@ public class Ball : MonoBehaviour
 	    rend = GetComponent<Renderer>();
 	    trail = GetComponent<TrailRenderer>();
 	    trail.sortingLayerName = "Background";
+	    audioSource = GetComponent<AudioSource>();
 	}
 
     void OnTriggerEnter2D(Collider2D other)
@@ -36,6 +40,8 @@ public class Ball : MonoBehaviour
             rb.velocity = (positionDifference.normalized + -paddlePosition.normalized).normalized * speed; // Half between -velocity and position difference
             trail.material = rend.material = paddle.material;
             lastHit = paddle.playerIndex;
+
+            audioSource.PlayOneShot(bounceSounds[UnityEngine.Random.Range(0, bounceSounds.Count)]);
         }
         /* OLD:
         if (other.gameObject.tag == "Player")
