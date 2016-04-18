@@ -95,7 +95,8 @@ public class Paddle : MonoBehaviour
             targetAngle = 360f - (targetAngle < 0 ? 360f + targetAngle : targetAngle);
             float angleDifference = targetAngle - angle;
 
-            if (noneBall && Mathf.Abs(angleDifference) > 130f)
+            Debug.Log(angleDifference);
+            if (noneBall && Mathf.Abs(angleDifference) > 130f && Mathf.Abs(angleDifference) < 230f)
                 return 0;
 
             if (Mathf.Abs(angleDifference) < 10f)

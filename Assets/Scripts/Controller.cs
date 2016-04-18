@@ -37,6 +37,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private GameObject superText;
     [SerializeField] private GameObject hexapongText;
+    [SerializeField] private GameObject oneScoreText;
+    [SerializeField] private GameObject twoScoreText;
     [Header("Sounds")]
     [SerializeField] private DictionaryEventSound eventSounds;
     [SerializeField] private List<AudioClip> countdownSounds;
@@ -53,7 +55,7 @@ public class Controller : MonoBehaviour
     private List<RandomEvent> weightedEvents;
     private bool begun = false;
     private AudioSource announcerAudio;
-    private int maxScore = 10;
+    private int maxScore = 5;
     private bool infiniteScore = false;
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
@@ -79,35 +81,32 @@ public class Controller : MonoBehaviour
 
     private IEnumerator AnimateSuperHexapongText()
     {
-        GameObject supercopy = Instantiate(superText, superText.transform.position, Quaternion.identity) as GameObject;
-        supercopy.transform.SetParent(superText.transform.parent);
         float delay = 0.7f;
-        StartCoroutine(AnimateTextPiece(supercopy));
+        StartCoroutine(AnimateTextPiece(superText, 1.25f, 0.5f, true));
         yield return new WaitForSeconds(delay);
-        GameObject hexapongCopy = Instantiate(hexapongText, hexapongText.transform.position, Quaternion.identity) as GameObject;
-        hexapongCopy.transform.SetParent(hexapongText.transform.parent);
-        StartCoroutine(AnimateTextPiece(hexapongCopy));
+        StartCoroutine(AnimateTextPiece(hexapongText, 1.25f, 0.5f, true));
     }
 
-    private IEnumerator AnimateTextPiece(GameObject textPiece)
+    private IEnumerator AnimateTextPiece(GameObject textPiece, float scale, float duration, bool destroy = false)
     {
-        Debug.Log("kek");
-        float duration = 0.5f;
+        GameObject copy = Instantiate(textPiece, textPiece.transform.position, Quaternion.identity) as GameObject;
+        copy.transform.SetParent(textPiece.transform.parent);
         Vector3 intialScale = Vector3.one;
-        Vector3 goalScale = new Vector3(1.25f, 1.25f, 1f);
-        Text textComponent = textPiece.GetComponent<Text>();
+        Vector3 goalScale = new Vector3(scale, scale, 1f);
+        Text textComponent = copy.GetComponent<Text>();
         Color initialColor = textComponent.color;
         Color goalColor = initialColor;
         goalColor.a = 0f;
         float percent = 0f;
         while (percent < 1f)
         {
-            textPiece.transform.localScale = Vector3.Lerp(intialScale, goalScale, percent);
+            copy.transform.localScale = Vector3.Lerp(intialScale, goalScale, percent);
             textComponent.color = Color.Lerp(initialColor, goalColor, percent);
             percent += Time.deltaTime / duration;
             yield return null;
         }
-        Destroy(textPiece);
+        if (destroy)
+            Destroy(copy);
     }
 
     private void BallExit(object sender, BallExitArgs e)
@@ -120,11 +119,13 @@ public class Controller : MonoBehaviour
                     break;
                 case PlayerIndex.One:
                     playerOneScore++;
+                    StartCoroutine(AnimateTextPiece(oneScoreText, 1.5f, 0.5f));
                     if (!infiniteScore && playerOneScore >= maxScore)
                         WinGame(e.LastHit);
                     break;
                 case PlayerIndex.Two:
                     playerTwoScore++;
+                    StartCoroutine(AnimateTextPiece(twoScoreText, 1.5f, 0.5f));
                     if (!infiniteScore && playerTwoScore >= maxScore)
                         WinGame(e.LastHit);
                     break;
@@ -158,7 +159,7 @@ public class Controller : MonoBehaviour
     private IEnumerator LowerMusicPitch()
     {
         float currentPitch;
-        float endPitch = 0.7f;
+        float endPitch = 0.8f;
         float percent = 0f;
         float duration = 5f;
         while (percent < 1)

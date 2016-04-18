@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,19 +38,30 @@ public class Ball : MonoBehaviour
             rb.velocity = (positionDifference.normalized + -paddlePosition.normalized).normalized * speed; // Half between -velocity and position difference
             trail.material = rend.material = paddle.material;
             lastHit = paddle.playerIndex;
-
             audioSource.PlayOneShot(bounceSounds[UnityEngine.Random.Range(0, bounceSounds.Count)]);
+            StartCoroutine(AnimateBallHit());
         }
-        /* OLD:
-        if (other.gameObject.tag == "Player")
+    }
+
+    private IEnumerator AnimateBallHit()
+    {
+        Vector3 originalScale = transform.localScale;
+        Vector3 goalScale = originalScale * 1.15f;
+        float duration = 0.15f;
+        float percent = 0f;
+        while (percent < 1)
         {
-            Paddle paddle = other.gameObject.GetComponent<Paddle>();
-            float reflectionAngle = 180f - paddle.angle + UnityEngine.Random.Range(-angularSpread, angularSpread);
-            rb.velocity = Quaternion.Euler(0, 0, reflectionAngle) * Vector2.right * speed;
-            trail.material = rend.material = paddle.material;
-            lastHit = paddle.playerIndex;
+            transform.localScale = Vector3.Lerp(transform.localScale, goalScale, percent);
+            percent += Time.deltaTime / duration;
+            yield return null;
         }
-        */
+        while (percent > 0)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, goalScale, percent);
+            percent -= Time.deltaTime / duration;
+            yield return null;
+        }
+        transform.localScale = originalScale;
     }
 
     void Update()
